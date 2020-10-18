@@ -9,6 +9,11 @@ import java.util.List;
 @ApiModel
 public class CoffeeOrderDto {
 
+    public CoffeeOrderDto( Long shopId,  List<Long> coffeeTypeIdList) {
+        this.shopId = shopId;
+        this.coffeeTypeIdList = coffeeTypeIdList;
+    }
+
     @NotNull(message = "shop id shouldn't be null value")
     private Long shopId;
 
