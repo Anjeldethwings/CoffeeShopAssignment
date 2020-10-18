@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +24,7 @@ public class OrderController {
     private CoffeeOrderService coffeeOrderService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CoffeeOrderCreatedDto> createOrder(@RequestBody CoffeeOrderDto coffeeOrderDto, HttpServletRequest request) throws CoffeeShopCustomException {
+    public ResponseEntity<CoffeeOrderCreatedDto> createOrder(@Validated @RequestBody CoffeeOrderDto coffeeOrderDto, HttpServletRequest request) throws CoffeeShopCustomException {
         CoffeeOrderCreatedDto order = coffeeOrderService.createCoffeeOrder(coffeeOrderDto);
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }

@@ -1,11 +1,19 @@
 package com.global.coffeeshop.controller.dto.request;
 
+import io.swagger.annotations.ApiModel;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
+@ApiModel
 public class CoffeeOrderDto {
 
-    private Long userId;
+    @NotNull(message = "shop id shouldn't be null value")
     private Long shopId;
+
+    @NotEmpty(message = "shop id shouldn't be empty value")
+    @NotNull(message = "coffee item list shouldn't be null value")
     private List<Long> coffeeTypeIdList;
 
     public Long getShopId() {
@@ -14,14 +22,6 @@ public class CoffeeOrderDto {
 
     public void setShopId(Long shopId) {
         this.shopId = shopId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public List<Long> getCoffeeTypeIdList() {
