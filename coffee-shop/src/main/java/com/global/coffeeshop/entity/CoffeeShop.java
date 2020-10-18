@@ -1,11 +1,23 @@
 package com.global.coffeeshop.entity;
 
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "coffee_shop")
-public class CoffeeShop extends AbstractEntity {
+@Where(clause = "is_deleted = false")
+public class CoffeeShop extends AbstractEntity implements Serializable {
+
+    public CoffeeShop(){
+
+    }
+
+    public CoffeeShop(Long shopId){
+        this.id = shopId;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,25 +29,6 @@ public class CoffeeShop extends AbstractEntity {
 
     @OneToMany(mappedBy = "coffeeShop")
     private List<Menu> menuList;
-
-    @OneToMany(mappedBy = "coffeeShop")
-    private List<OrderQueue> orderQueueList;
-
-    public List<OrderQueue> getOrderQueueList() {
-        return orderQueueList;
-    }
-
-    public void setOrderQueueList(List<OrderQueue> orderQueueList) {
-        this.orderQueueList = orderQueueList;
-    }
-
-    public List<Menu> getMenuList() {
-        return menuList;
-    }
-
-    public void setMenuList(List<Menu> menuList) {
-        this.menuList = menuList;
-    }
 
     public Long getId() {
         return id;
@@ -59,5 +52,13 @@ public class CoffeeShop extends AbstractEntity {
 
     public void setPhone(Integer phone) {
         this.phone = phone;
+    }
+
+    public List<Menu> getMenuList() {
+        return menuList;
+    }
+
+    public void setMenuList(List<Menu> menuList) {
+        this.menuList = menuList;
     }
 }

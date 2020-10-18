@@ -1,11 +1,15 @@
 package com.global.coffeeshop.entity;
 
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "role")
-public class Role {
+@Where(clause = "is_deleted = false")
+public class Role extends AbstractEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

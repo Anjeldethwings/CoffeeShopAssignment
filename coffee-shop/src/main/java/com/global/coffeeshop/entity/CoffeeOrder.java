@@ -1,24 +1,53 @@
 package com.global.coffeeshop.entity;
 
 
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "coffee_order")
-public class CoffeeOrder extends AbstractEntity{
+@Where(clause = "is_deleted = false")
+public class CoffeeOrder extends AbstractEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany
-    @JoinTable(
-            name = "coffee_order_coffee_types",
-            joinColumns = {@JoinColumn(name = "coffee_order_id")},
-            inverseJoinColumns = {@JoinColumn(name = "coffee_type_id")}
-    )
-    private List<CoffeeType> coffeeTypeList;
+    @ManyToOne
+    private OrderQueue orderQueue;
+
+    @OneToMany(mappedBy = "coffeeOrder")
+    private List<CoffeeOrderCoffeeType> coffeeOrderCoffeeTypeList;
+
+    @ManyToOne
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<CoffeeOrderCoffeeType> getCoffeeOrderCoffeeTypeList() {
+        return coffeeOrderCoffeeTypeList;
+    }
+
+    public void setCoffeeOrderCoffeeTypeList(List<CoffeeOrderCoffeeType> coffeeOrderCoffeeTypeList) {
+        this.coffeeOrderCoffeeTypeList = coffeeOrderCoffeeTypeList;
+    }
+
+    public OrderQueue getOrderQueue() {
+        return orderQueue;
+    }
+
+    public void setOrderQueue(OrderQueue orderQueue) {
+        this.orderQueue = orderQueue;
+    }
 
     public Long getId() {
         return id;
@@ -28,11 +57,4 @@ public class CoffeeOrder extends AbstractEntity{
         this.id = id;
     }
 
-    public List<CoffeeType> getCoffeeTypeList() {
-        return coffeeTypeList;
-    }
-
-    public void setCoffeeTypeList(List<CoffeeType> coffeeTypeList) {
-        this.coffeeTypeList = coffeeTypeList;
-    }
 }

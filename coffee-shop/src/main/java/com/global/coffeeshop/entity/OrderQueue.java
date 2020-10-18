@@ -1,10 +1,23 @@
 package com.global.coffeeshop.entity;
 
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name="order_queue")
-public class OrderQueue extends AbstractEntity{
+@Where(clause = "is_deleted = false")
+public class OrderQueue extends AbstractEntity implements Serializable {
+
+    public OrderQueue(){
+
+    }
+
+    public OrderQueue(Long queueId){
+        this.id = queueId;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,6 +25,25 @@ public class OrderQueue extends AbstractEntity{
 
     @ManyToOne
     private CoffeeShop coffeeShop;
+
+    @OneToMany(mappedBy = "orderQueue", fetch = FetchType.EAGER)
+    private List<CoffeeOrder> coffeeOrderList;
+
+    public CoffeeShop getCoffeeShop() {
+        return coffeeShop;
+    }
+
+    public void setCoffeeShop(CoffeeShop coffeeShop) {
+        this.coffeeShop = coffeeShop;
+    }
+
+    public List<CoffeeOrder> getCoffeeOrderList() {
+        return coffeeOrderList;
+    }
+
+    public void setCoffeeOrderList(List<CoffeeOrder> coffeeOrderList) {
+        this.coffeeOrderList = coffeeOrderList;
+    }
 
     public Long getId() {
         return id;

@@ -1,11 +1,15 @@
 package com.global.coffeeshop.entity;
 
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "menu")
-public class Menu extends AbstractEntity {
+@Where(clause = "is_deleted = false")
+public class Menu extends AbstractEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,29 +20,14 @@ public class Menu extends AbstractEntity {
     @ManyToOne
     private CoffeeShop coffeeShop;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "menu_coffee_types",
-            joinColumns = {@JoinColumn(name = "menu_id")},
-            inverseJoinColumns = {@JoinColumn(name = "coffee_type_id")}
+            joinColumns = {@JoinColumn(referencedColumnName = "id", name = "menu_id")},
+            inverseJoinColumns = {@JoinColumn(referencedColumnName = "id", name = "coffee_type_id")}
     )
     private List<CoffeeType> coffeeTypeList;
-
-    public List<CoffeeType> getCoffeeTypeList() {
-        return coffeeTypeList;
-    }
-
-    public void setCoffeeTypeList(List<CoffeeType> coffeeTypeList) {
-        this.coffeeTypeList = coffeeTypeList;
-    }
-
-    public CoffeeShop getCoffeeShop() {
-        return coffeeShop;
-    }
-
-    public void setCoffeeShop(CoffeeShop coffeeShop) {
-        this.coffeeShop = coffeeShop;
-    }
 
     public Long getId() {
         return id;
@@ -54,5 +43,21 @@ public class Menu extends AbstractEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public CoffeeShop getCoffeeShop() {
+        return coffeeShop;
+    }
+
+    public void setCoffeeShop(CoffeeShop coffeeShop) {
+        this.coffeeShop = coffeeShop;
+    }
+
+    public List<CoffeeType> getCoffeeTypeList() {
+        return coffeeTypeList;
+    }
+
+    public void setCoffeeTypeList(List<CoffeeType> coffeeTypeList) {
+        this.coffeeTypeList = coffeeTypeList;
     }
 }
