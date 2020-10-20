@@ -1,4 +1,4 @@
-package com.global.coffeeshop.controller.dto;
+package com.global.coffeeshop.controller.dto.response;
 
 public class ErrorResponseDto {
 

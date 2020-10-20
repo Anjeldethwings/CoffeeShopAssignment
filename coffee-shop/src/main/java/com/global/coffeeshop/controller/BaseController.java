@@ -1,6 +1,6 @@
 package com.global.coffeeshop.controller;
 
-import com.global.coffeeshop.controller.dto.ErrorResponseDto;
+import com.global.coffeeshop.controller.dto.response.ErrorResponseDto;
 import com.global.coffeeshop.exception.CoffeeShopCustomException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +10,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import javax.xml.bind.ValidationException;
+import java.util.ArrayList;
+import java.util.List;
 
 @ControllerAdvice
 public class BaseController {
@@ -28,10 +29,12 @@ public class BaseController {
         return new ResponseEntity(new ErrorResponseDto("Internal Error","CE02"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    //TODO - set generated error
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity handleValidationException(MethodArgumentNotValidException exception) {
-        logger.error(exception.getMessage());
-        return new ResponseEntity(new ErrorResponseDto("Parameter validation failed", "CE01"), HttpStatus.BAD_REQUEST);
+        List<String> errors = new ArrayList<>();
+        exception.getBindingResult().getAllErrors().
+                forEach(error -> errors.add(error.getDefaultMessage()));
+        logger.error(errors.toString());
+        return new ResponseEntity(new ErrorResponseDto(errors.toString(), "CE01"), HttpStatus.BAD_REQUEST);
     }
 }

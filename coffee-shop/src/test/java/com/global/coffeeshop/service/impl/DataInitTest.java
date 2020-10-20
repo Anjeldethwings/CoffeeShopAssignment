@@ -32,9 +32,6 @@ public class DataInitTest {
     private OrderQueueRepository orderQueueRepository;
 
     @Autowired
-    private CoffeeOrderCoffeeTypeRepository coffeeOrderCoffeeTypeRepository;
-
-    @Autowired
     private CoffeeOrderRepository coffeeOrderRepository;
 
     @Test
@@ -139,12 +136,12 @@ public class DataInitTest {
         CoffeeType coffeeType1 = new CoffeeType();
         coffeeType1.setId((long) 2);
 
-        CoffeeOrderCoffeeType coffeeOrderCoffeeType1 = new CoffeeOrderCoffeeType();
-        coffeeOrderCoffeeType1.setCoffeeType(coffeeType1);
-        CoffeeOrder coffeeOrder1 = new CoffeeOrder();
-        coffeeOrder1.setId((long) 3);
-        coffeeOrderCoffeeType1.setCoffeeOrder(coffeeOrder1);
-        coffeeOrderCoffeeTypeRepository.save(coffeeOrderCoffeeType1);
+//        CoffeeOrderCoffeeType coffeeOrderCoffeeType1 = new CoffeeOrderCoffeeType();
+//        coffeeOrderCoffeeType1.setCoffeeType(coffeeType1);
+//        CoffeeOrder coffeeOrder1 = new CoffeeOrder();
+//        coffeeOrder1.setId((long) 3);
+//        coffeeOrderCoffeeType1.setCoffeeOrder(coffeeOrder1);
+//        coffeeOrderCoffeeTypeRepository.save(coffeeOrderCoffeeType1);
 
 //        CoffeeOrderCoffeeType coffeeOrderCoffeeType2 = new CoffeeOrderCoffeeType();
 //        coffeeOrderCoffeeType2.setCoffeeType(coffeeType1);

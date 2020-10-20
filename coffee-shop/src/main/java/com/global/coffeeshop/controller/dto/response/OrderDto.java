@@ -1,11 +1,13 @@
 package com.global.coffeeshop.controller.dto.response;
 
+import com.global.coffeeshop.controller.dto.request.UserDto;
+
 import java.util.List;
 
 public class OrderDto {
     private Long id;
     private UserDto user;
-    private List<CoffeeOrderCoffeeTypeDto> coffeeOrderCoffeeTypeList;
+    private List<CoffeeTypeDto> coffeeTypeList;
     private QueueDto orderQueue;
 
     public QueueDto getOrderQueue() {
@@ -32,11 +34,11 @@ public class OrderDto {
         this.user = user;
     }
 
-    public List<CoffeeOrderCoffeeTypeDto> getCoffeeOrderCoffeeTypeList() {
-        return coffeeOrderCoffeeTypeList;
+    public List<CoffeeTypeDto> getCoffeeTypeList() {
+        return coffeeTypeList;
     }
 
-    public void setCoffeeOrderCoffeeTypeList(List<CoffeeOrderCoffeeTypeDto> coffeeOrderCoffeeTypeList) {
-        this.coffeeOrderCoffeeTypeList = coffeeOrderCoffeeTypeList;
+    public void setCoffeeTypeList(List<CoffeeTypeDto> coffeeTypeList) {
+        this.coffeeTypeList = coffeeTypeList;
     }
 }

@@ -17,7 +17,7 @@ public class CoffeeOrderDto {
     @NotNull(message = "shop id shouldn't be null value")
     private Long shopId;
 
-    @NotEmpty(message = "shop id shouldn't be empty value")
+    @NotEmpty(message = "coffee item list shouldn't be empty value")
     @NotNull(message = "coffee item list shouldn't be null value")
     private List<Long> coffeeTypeIdList;
 

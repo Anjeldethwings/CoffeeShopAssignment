@@ -11,11 +11,11 @@ import java.util.List;
 @Where(clause = "is_deleted = false")
 public class CoffeeType extends AbstractEntity implements Serializable {
 
-    public CoffeeType(){
+    public CoffeeType() {
 
     }
 
-    public CoffeeType(Long typeId){
+    public CoffeeType(Long typeId) {
         this.id = typeId;
     }
 
@@ -28,15 +28,15 @@ public class CoffeeType extends AbstractEntity implements Serializable {
     @ManyToMany(mappedBy = "coffeeTypeList")
     private List<Menu> menuList;
 
-    @OneToMany(mappedBy = "coffeeType")
-    private List<CoffeeOrderCoffeeType> coffeeOrderCoffeeTypeList;
+    @ManyToMany(mappedBy = "coffeeTypeList", fetch = FetchType.LAZY)
+    private List<CoffeeOrder> coffeeOrderList;
 
-    public List<CoffeeOrderCoffeeType> getCoffeeOrderCoffeeTypeList() {
-        return coffeeOrderCoffeeTypeList;
+    public List<CoffeeOrder> getCoffeeOrderList() {
+        return coffeeOrderList;
     }
 
-    public void setCoffeeOrderCoffeeTypeList(List<CoffeeOrderCoffeeType> coffeeOrderCoffeeTypeList) {
-        this.coffeeOrderCoffeeTypeList = coffeeOrderCoffeeTypeList;
+    public void setCoffeeOrderList(List<CoffeeOrder> coffeeOrderList) {
+        this.coffeeOrderList = coffeeOrderList;
     }
 
     public List<Menu> getMenuList() {

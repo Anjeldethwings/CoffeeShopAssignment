@@ -19,26 +19,23 @@ public class CoffeeOrder extends AbstractEntity implements Serializable {
     @ManyToOne
     private OrderQueue orderQueue;
 
-    @OneToMany(mappedBy = "coffeeOrder")
-    private List<CoffeeOrderCoffeeType> coffeeOrderCoffeeTypeList;
+    @ManyToMany
+    @JoinTable(
+            name = "order_coffee_types",
+            joinColumns = {@JoinColumn(referencedColumnName = "id", name = "order_id")},
+            inverseJoinColumns = {@JoinColumn(referencedColumnName = "id", name = "coffee_type_id")}
+    )
+    private List<CoffeeType> coffeeTypeList;
 
     @ManyToOne
     private User user;
 
-    public User getUser() {
-        return user;
+    public Long getId() {
+        return id;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public List<CoffeeOrderCoffeeType> getCoffeeOrderCoffeeTypeList() {
-        return coffeeOrderCoffeeTypeList;
-    }
-
-    public void setCoffeeOrderCoffeeTypeList(List<CoffeeOrderCoffeeType> coffeeOrderCoffeeTypeList) {
-        this.coffeeOrderCoffeeTypeList = coffeeOrderCoffeeTypeList;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public OrderQueue getOrderQueue() {
@@ -49,12 +46,19 @@ public class CoffeeOrder extends AbstractEntity implements Serializable {
         this.orderQueue = orderQueue;
     }
 
-    public Long getId() {
-        return id;
+    public List<CoffeeType> getCoffeeTypeList() {
+        return coffeeTypeList;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCoffeeTypeList(List<CoffeeType> coffeeTypeList) {
+        this.coffeeTypeList = coffeeTypeList;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

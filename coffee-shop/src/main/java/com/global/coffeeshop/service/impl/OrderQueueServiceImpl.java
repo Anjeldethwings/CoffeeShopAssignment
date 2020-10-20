@@ -1,5 +1,6 @@
 package com.global.coffeeshop.service.impl;
 
+import com.global.coffeeshop.controller.dto.response.QueueDetailsDto;
 import com.global.coffeeshop.entity.OrderQueue;
 import com.global.coffeeshop.exception.CoffeeShopCustomException;
 import com.global.coffeeshop.respository.OrderQueueRepository;
@@ -19,10 +20,10 @@ public class OrderQueueServiceImpl implements OrderQueueService {
     @Autowired
     private OrderQueueRepository orderQueueRepository;
 
-    static Integer totalSize = 0;
+    static Long totalSize = Long.valueOf(0);
 
     @Override
-    public Long getSuitableQueueByShopId(Long id) throws CoffeeShopCustomException {
+    public QueueDetailsDto getSuitableQueueByShopId(Long id) throws CoffeeShopCustomException {
 
         List<OrderQueue> orderQueueList = orderQueueRepository.getOrderQueueByCoffeeShopId(id);
 
@@ -31,11 +32,11 @@ public class OrderQueueServiceImpl implements OrderQueueService {
             throw new CoffeeShopCustomException(HttpStatus.BAD_REQUEST, "Empty queue for the selected shop id");
         }
 
-        HashMap<Long, Integer> queueDetals = new HashMap<>();
+        HashMap<Long, Long> queueDetals = new HashMap<>();
         orderQueueList.forEach(queue -> {
-            totalSize = 0;
+            totalSize = Long.valueOf(0);
             queue.getCoffeeOrderList().parallelStream().forEach(order -> {
-                Integer size = order.getCoffeeOrderCoffeeTypeList().size();
+                Long size = Long.valueOf(order.getCoffeeTypeList().size());
                 totalSize = totalSize + size;
             });
             queueDetals.put(queue.getId(), totalSize);
@@ -43,7 +44,7 @@ public class OrderQueueServiceImpl implements OrderQueueService {
 
         Long key = Collections.min(queueDetals.entrySet(), Map.Entry.comparingByValue()).getKey();
 
-        return key;
+        return new QueueDetailsDto(key, queueDetals.get(key));
     }
 
     @Override

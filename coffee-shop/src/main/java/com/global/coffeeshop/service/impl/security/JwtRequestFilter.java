@@ -1,5 +1,6 @@
 package com.global.coffeeshop.service.impl.security;
 
+import com.global.coffeeshop.service.impl.UserService;
 import com.global.coffeeshop.util.JwtProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,7 +24,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
 
     @Autowired
-    private CoffeeUserDetailServiceImpl coffeeUserDetailServiceImpl;
+    private UserService coffeeUserDetailServiceImpl;
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {

@@ -1,6 +1,6 @@
 package com.global.coffeeshop.configuration;
 
-import com.global.coffeeshop.service.impl.security.CoffeeUserDetailServiceImpl;
+import com.global.coffeeshop.service.impl.UserService;
 import com.global.coffeeshop.service.impl.security.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private CoffeeUserDetailServiceImpl coffeeUserDetailServiceImpl;
+    private UserService coffeeUserDetailServiceImpl;
 
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
@@ -47,6 +47,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/admin/**").hasAnyAuthority("Admin")
+                .antMatchers("/order").hasAnyAuthority("Customer")
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

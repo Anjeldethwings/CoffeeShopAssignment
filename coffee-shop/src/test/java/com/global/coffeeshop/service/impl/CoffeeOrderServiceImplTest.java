@@ -1,6 +1,6 @@
 package com.global.coffeeshop.service.impl;
 
-import com.global.coffeeshop.controller.dto.response.CoffeeOrderCreatedDto;
+import com.global.coffeeshop.controller.dto.response.CoffeeOrderResDto;
 import com.global.coffeeshop.entity.User;
 import com.global.coffeeshop.respository.CoffeeTypeRepository;
 import com.global.coffeeshop.respository.RoleRepository;
@@ -29,7 +29,7 @@ class CoffeeOrderServiceImplTest {
 
     private User user;
 
-    CoffeeOrderCreatedDto coffeeOrderCreatedDto = null;
+    CoffeeOrderResDto coffeeOrderResDto = null;
 
     @BeforeEach
     void setUp() {

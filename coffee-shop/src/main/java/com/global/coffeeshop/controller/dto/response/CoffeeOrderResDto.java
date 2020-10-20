@@ -2,7 +2,7 @@ package com.global.coffeeshop.controller.dto.response;
 
 import java.util.List;
 
-public class CoffeeOrderCreatedDto {
+public class CoffeeOrderResDto {
 
     private Long shopId;
     private List<Long> coffeeTypeIdList;

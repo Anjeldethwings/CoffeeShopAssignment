@@ -1,9 +1,10 @@
 package com.global.coffeeshop.service.impl.security;
 
 import com.global.coffeeshop.controller.dto.request.LoginDto;
-import com.global.coffeeshop.controller.dto.response.AuthenticationResponseDto;
+import com.global.coffeeshop.controller.dto.response.AuthenticationResDto;
 import com.global.coffeeshop.exception.CoffeeShopCustomException;
 import com.global.coffeeshop.service.AuthService;
+import com.global.coffeeshop.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,13 +20,13 @@ public class AuthServiceImpl implements AuthService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private CoffeeUserDetailServiceImpl coffeeUserDetailServiceImpl;
+    private UserService coffeeUserDetailServiceImpl;
 
     @Autowired
     private JwtUtilService jwtUtilService;
 
     @Override
-    public AuthenticationResponseDto authenticationCheck(LoginDto loginDto) throws CoffeeShopCustomException {
+    public AuthenticationResDto authenticationCheck(LoginDto loginDto) throws CoffeeShopCustomException {
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUserName(), loginDto.getPassword()));
@@ -38,7 +39,9 @@ public class AuthServiceImpl implements AuthService {
 
         final String jwt = jwtUtilService.generateToken(userDetails);
 
-        return new AuthenticationResponseDto(jwt);
+        return new AuthenticationResDto(jwt);
 
     }
+
+
 }

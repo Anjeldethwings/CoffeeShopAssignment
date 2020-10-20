@@ -1,7 +1,7 @@
 package com.global.coffeeshop.controller;
 
 import com.global.coffeeshop.controller.dto.request.CoffeeOrderDto;
-import com.global.coffeeshop.controller.dto.response.CoffeeOrderCreatedDto;
+import com.global.coffeeshop.controller.dto.response.CoffeeOrderResDto;
 import com.global.coffeeshop.controller.dto.response.OrderDto;
 import com.global.coffeeshop.exception.CoffeeShopCustomException;
 import com.global.coffeeshop.service.CoffeeOrderService;
@@ -24,8 +24,8 @@ public class OrderController {
     private CoffeeOrderService coffeeOrderService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CoffeeOrderCreatedDto> createOrder(@Validated @RequestBody CoffeeOrderDto coffeeOrderDto, HttpServletRequest request) throws CoffeeShopCustomException {
-        CoffeeOrderCreatedDto order = coffeeOrderService.createCoffeeOrder(coffeeOrderDto);
+    public ResponseEntity<CoffeeOrderResDto> createOrder(@Validated @RequestBody CoffeeOrderDto coffeeOrderDto, HttpServletRequest request) throws CoffeeShopCustomException {
+        CoffeeOrderResDto order = coffeeOrderService.createCoffeeOrder(coffeeOrderDto);
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
 
@@ -37,7 +37,7 @@ public class OrderController {
 
     @PutMapping(value = "/{order-id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OrderDto> updateOrderByOrderId(@PathVariable(name = "order-id") Long orderId, @RequestBody CoffeeOrderDto coffeeOrderDto, HttpServletRequest request) throws CoffeeShopCustomException {
-        CoffeeOrderCreatedDto order = coffeeOrderService.updateCoffeeOrder(coffeeOrderDto, orderId);
+        CoffeeOrderResDto order = coffeeOrderService.updateCoffeeOrder(coffeeOrderDto, orderId);
         return new ResponseEntity(order,HttpStatus.BAD_REQUEST);
     }
 
@@ -45,11 +45,6 @@ public class OrderController {
     public ResponseEntity deleteOrder(@PathVariable (name = "order-id") Long orderId, HttpServletRequest request) throws CoffeeShopCustomException {
         coffeeOrderService.deleteOrder(orderId);
         return new ResponseEntity(HttpStatus.OK);
-    }
-
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getAllOrders(HttpServletRequest request){
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
 }

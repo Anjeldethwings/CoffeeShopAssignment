@@ -1,9 +1,9 @@
 package com.global.coffeeshop.controller.dto.response;
 
-public class AuthenticationResponseDto {
+public class AuthenticationResDto {
     String jwt;
 
-    public AuthenticationResponseDto(String jwt) {
+    public AuthenticationResDto(String jwt) {
         this.jwt = jwt;
     }
 

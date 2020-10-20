@@ -19,6 +19,14 @@ public class User extends AbstractEntity implements Serializable {
         this.id = userId;
     }
 
+    public User(Long id, String name, String email, String mobile, Role role) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.mobile = mobile;
+        this.role = role;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

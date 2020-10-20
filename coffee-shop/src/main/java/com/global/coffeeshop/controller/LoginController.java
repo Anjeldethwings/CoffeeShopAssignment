@@ -1,7 +1,7 @@
 package com.global.coffeeshop.controller;
 
 import com.global.coffeeshop.controller.dto.request.LoginDto;
-import com.global.coffeeshop.controller.dto.response.AuthenticationResponseDto;
+import com.global.coffeeshop.controller.dto.response.AuthenticationResDto;
 import com.global.coffeeshop.exception.CoffeeShopCustomException;
 import com.global.coffeeshop.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class LoginController {
     private AuthService authService;
 
     @PostMapping
-    public ResponseEntity<AuthenticationResponseDto> login(@RequestBody LoginDto loginDto) throws CoffeeShopCustomException {
+    public ResponseEntity<AuthenticationResDto> login(@RequestBody LoginDto loginDto) throws CoffeeShopCustomException {
         return new ResponseEntity<>(authService.authenticationCheck(loginDto), HttpStatus.OK);
     }
 }

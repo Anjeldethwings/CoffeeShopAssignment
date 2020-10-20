@@ -1,8 +1,9 @@
 package com.global.coffeeshop.controller;
 
-import com.global.coffeeshop.controller.dto.ErrorResponseDto;
-import com.global.coffeeshop.controller.dto.response.UserDto;
+import com.global.coffeeshop.controller.dto.request.UserDto;
 import com.global.coffeeshop.exception.CoffeeShopCustomException;
+import com.global.coffeeshop.service.impl.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,12 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("users")
 public class UserController {
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto, HttpServletRequest request) throws CoffeeShopCustomException {
-        return new ResponseEntity(new ErrorResponseDto("Not implemented yet"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(userService.createUser(userDto), HttpStatus.BAD_REQUEST);
     }
 
 
