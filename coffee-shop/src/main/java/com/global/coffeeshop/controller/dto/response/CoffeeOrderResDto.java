@@ -4,6 +4,16 @@ import java.util.List;
 
 public class CoffeeOrderResDto {
 
+    public CoffeeOrderResDto() {
+    }
+
+    public CoffeeOrderResDto(Long shopId, List<Long> coffeeTypeIdList, Long queueId, Long orderId) {
+        this.shopId = shopId;
+        this.coffeeTypeIdList = coffeeTypeIdList;
+        this.queueId = queueId;
+        this.orderId = orderId;
+    }
+
     private Long shopId;
     private List<Long> coffeeTypeIdList;
     private Long queueId;

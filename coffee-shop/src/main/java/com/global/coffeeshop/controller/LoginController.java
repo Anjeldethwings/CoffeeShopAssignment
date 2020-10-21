@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.security.auth.message.AuthException;
+
 @RestController
 @RequestMapping("/login")
 public class LoginController {
@@ -19,7 +21,7 @@ public class LoginController {
     private AuthService authService;
 
     @PostMapping
-    public ResponseEntity<AuthenticationResDto> login(@RequestBody LoginDto loginDto) throws CoffeeShopCustomException {
+    public ResponseEntity<AuthenticationResDto> login(@RequestBody LoginDto loginDto) throws CoffeeShopCustomException, AuthException {
         return new ResponseEntity<>(authService.authenticationCheck(loginDto), HttpStatus.OK);
     }
 }

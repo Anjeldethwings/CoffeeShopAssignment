@@ -12,6 +12,15 @@ import java.util.List;
 @Where(clause = "is_deleted = false")
 public class CoffeeOrder extends AbstractEntity implements Serializable {
 
+    public CoffeeOrder() {
+    }
+
+    public CoffeeOrder(OrderQueue orderQueue, List<CoffeeType> coffeeTypeList, User user) {
+        this.orderQueue = orderQueue;
+        this.coffeeTypeList = coffeeTypeList;
+        this.user = user;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

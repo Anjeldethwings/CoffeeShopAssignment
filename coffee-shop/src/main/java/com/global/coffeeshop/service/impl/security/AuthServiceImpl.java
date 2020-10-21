@@ -13,6 +13,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.message.AuthException;
+
 @Service
 public class AuthServiceImpl implements AuthService {
 
@@ -20,22 +22,22 @@ public class AuthServiceImpl implements AuthService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserService coffeeUserDetailServiceImpl;
+    private UserService userService;
 
     @Autowired
     private JwtUtilService jwtUtilService;
 
     @Override
-    public AuthenticationResDto authenticationCheck(LoginDto loginDto) throws CoffeeShopCustomException {
+    public AuthenticationResDto authenticationCheck(LoginDto loginDto) throws AuthException {
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUserName(), loginDto.getPassword()));
         } catch (BadCredentialsException e) {
             logger.error("Invalid credentials for login request");
-            throw new CoffeeShopCustomException(HttpStatus.BAD_REQUEST, "Invalid credentials for login request");
+            throw new AuthException("Invalid credentials for login request");
         }
 
-        final UserDetails userDetails = coffeeUserDetailServiceImpl.loadUserByUsername(loginDto.getUserName());
+        final UserDetails userDetails = userService.loadUserByUsername(loginDto.getUserName());
 
         final String jwt = jwtUtilService.generateToken(userDetails);
 

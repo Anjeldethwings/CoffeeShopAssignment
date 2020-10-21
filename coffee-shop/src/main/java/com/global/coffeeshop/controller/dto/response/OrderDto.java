@@ -5,6 +5,17 @@ import com.global.coffeeshop.controller.dto.request.UserDto;
 import java.util.List;
 
 public class OrderDto {
+
+    public OrderDto() {
+    }
+
+    public OrderDto(Long id, UserDto user, List<CoffeeTypeDto> coffeeTypeList, QueueDto orderQueue) {
+        this.id = id;
+        this.user = user;
+        this.coffeeTypeList = coffeeTypeList;
+        this.orderQueue = orderQueue;
+    }
+
     private Long id;
     private UserDto user;
     private List<CoffeeTypeDto> coffeeTypeList;

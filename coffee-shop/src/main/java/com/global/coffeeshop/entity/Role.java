@@ -11,6 +11,13 @@ import java.util.List;
 @Where(clause = "is_deleted = false")
 public class Role extends AbstractEntity implements Serializable {
 
+    public Role() {
+    }
+
+    public Role(Long id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

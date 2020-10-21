@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/orders")
 @Api(tags = {"order-management"})
 public class OrderController {
 
@@ -36,7 +36,7 @@ public class OrderController {
     }
 
     @PutMapping(value = "/{order-id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OrderDto> updateOrderByOrderId(@PathVariable(name = "order-id") Long orderId, @RequestBody CoffeeOrderDto coffeeOrderDto, HttpServletRequest request) throws CoffeeShopCustomException {
+    public ResponseEntity<OrderDto> updateOrderByOrderId(@PathVariable(name = "order-id") Long orderId,@Validated @RequestBody CoffeeOrderDto coffeeOrderDto, HttpServletRequest request) throws CoffeeShopCustomException {
         CoffeeOrderResDto order = coffeeOrderService.updateCoffeeOrder(coffeeOrderDto, orderId);
         return new ResponseEntity(order,HttpStatus.BAD_REQUEST);
     }

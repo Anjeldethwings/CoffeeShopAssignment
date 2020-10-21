@@ -52,15 +52,8 @@ public class CoffeeOrderServiceImpl implements CoffeeOrderService {
             throw new CoffeeShopCustomException(HttpStatus.BAD_REQUEST, "Shop id is not found.");
         }
 
-        Long shopId = coffeeOrderDto.getShopId();
         User user = coffeeUserService.getUserFromContext();
-
-        Long queueId = orderQueueService.getSuitableQueueByShopId(shopId).getQueueNo();
-        OrderQueue orderQueue = new OrderQueue(queueId);
-
-        CoffeeOrder coffeeOrder = new CoffeeOrder();
-        coffeeOrder.setOrderQueue(orderQueue);
-        coffeeOrder.setUser(user);
+        Long queueId = orderQueueService.getSuitableQueueByShopId(coffeeOrderDto.getShopId()).getQueueNo();
 
         List<CoffeeType> coffeeTypeList = new ArrayList<>();
         coffeeOrderDto.getCoffeeTypeIdList().forEach(coffeeItem -> {
@@ -68,15 +61,10 @@ public class CoffeeOrderServiceImpl implements CoffeeOrderService {
             coffeeTypeList.add(coffeeType);
         });
 
-        coffeeOrder.setCoffeeTypeList(coffeeTypeList);
+        CoffeeOrder coffeeOrder = new CoffeeOrder(new OrderQueue(queueId), coffeeTypeList, user);
         CoffeeOrder coffeeOrderCreated = coffeeOrderRepository.save(coffeeOrder);
 
-        CoffeeOrderResDto coffeeOrderResDto = new CoffeeOrderResDto();
-        modelMapper.map(coffeeOrderDto, coffeeOrderResDto);
-        coffeeOrderResDto.setOrderId(coffeeOrderCreated.getId());
-        coffeeOrderResDto.setQueueId(queueId);
-
-        return coffeeOrderResDto;
+        return new CoffeeOrderResDto(coffeeOrderDto.getShopId(), coffeeOrderDto.getCoffeeTypeIdList(), queueId, coffeeOrderCreated.getId());
     }
 
     @Override
@@ -101,12 +89,10 @@ public class CoffeeOrderServiceImpl implements CoffeeOrderService {
         order.setCoffeeTypeList(coffeeTypeList);
         coffeeOrderRepository.save(order);
 
-        CoffeeOrderResDto coffeeOrderResDto = new CoffeeOrderResDto();
-        modelMapper.map(coffeeOrderDto, coffeeOrderResDto);
-        coffeeOrderResDto.setShopId(order.getOrderQueue().getCoffeeShop().getId());
-        coffeeOrderResDto.setOrderId(id);
-        coffeeOrderResDto.setQueueId(order.getOrderQueue().getId());
-        return coffeeOrderResDto;
+        return new CoffeeOrderResDto(
+                order.getOrderQueue().getCoffeeShop().getId(),
+                coffeeOrderDto.getCoffeeTypeIdList(),
+                order.getOrderQueue().getId(), id);
     }
 
     @Override
@@ -115,11 +101,10 @@ public class CoffeeOrderServiceImpl implements CoffeeOrderService {
 
         Optional<CoffeeOrder> coffeeOrder = Optional.ofNullable(coffeeOrderRepository.findById(id)
                 .orElseThrow(() -> new CoffeeShopCustomException(HttpStatus.BAD_REQUEST, "Order id not found for, order id : " + id)));
-
         coffeeUserService.validateUser(coffeeOrder.get().getUser().getId());
-
         OrderDto orderDto = new OrderDto();
         modelMapper.map(coffeeOrder.get(), orderDto);
+        orderDto.getUser().setRoleId(coffeeOrder.get().getUser().getRole().getId());
         return orderDto;
     }
 
@@ -129,18 +114,16 @@ public class CoffeeOrderServiceImpl implements CoffeeOrderService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "coffee_order_cache", allEntries = true)
     public boolean deleteOrder(Long id) throws CoffeeShopCustomException {
 
         if (!isExistByOrderId(id)) {
             logger.error("Order is not found for delete order operation");
             throw new CoffeeShopCustomException(HttpStatus.BAD_REQUEST, "Order is not found for delete order operation");
         }
-
         Optional<CoffeeOrder> coffeeOrder = Optional.ofNullable(coffeeOrderRepository.findById(id)
                 .orElseThrow(() -> new CoffeeShopCustomException(HttpStatus.BAD_REQUEST, "Order id not found for, order id : " + id)));
-
         coffeeUserService.validateUser(coffeeOrder.get().getUser().getId());
-
         coffeeOrder.get().setDeleted(true);
         coffeeOrderRepository.save(coffeeOrder.get());
 

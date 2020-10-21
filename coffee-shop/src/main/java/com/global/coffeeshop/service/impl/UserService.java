@@ -4,8 +4,8 @@ import com.global.coffeeshop.controller.dto.request.UserDto;
 import com.global.coffeeshop.entity.Role;
 import com.global.coffeeshop.exception.CoffeeShopCustomException;
 import com.global.coffeeshop.respository.UserRepository;
-import com.global.coffeeshop.service.CommonService;
 import com.global.coffeeshop.service.CoffeeUserService;
+import com.global.coffeeshop.service.CommonService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserService implements CoffeeUserService,UserDetailsService, CommonService {
+public class UserService implements CoffeeUserService, UserDetailsService, CommonService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -38,7 +38,6 @@ public class UserService implements CoffeeUserService,UserDetailsService, Common
 
     @Override
     public UserDetails loadUserByUsername(String s) {
-
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         try {
             authorities.add(new SimpleGrantedAuthority(coffeeUserService.getUserByUserName(s).getRole().getName()));
@@ -49,22 +48,13 @@ public class UserService implements CoffeeUserService,UserDetailsService, Common
         }
     }
 
-
-    @Override
-    public boolean isExistByUserId(Long id) {
-        return userRepository.existsById(id);
-    }
-
     @Override
     public UserDto createUser(UserDto userDto) {
 
         com.global.coffeeshop.entity.User user = new com.global.coffeeshop.entity.User();
         modelMapper.map(userDto, user);
-
-        Role role = new Role();
-        role.setId(userDto.getRoleId());
+        Role role = new Role(userDto.getRoleId());
         user.setRole(role);
-
         com.global.coffeeshop.entity.User userCreated = userRepository.save(user);
         userDto.setId(userCreated.getId());
 
@@ -80,7 +70,6 @@ public class UserService implements CoffeeUserService,UserDetailsService, Common
 
     @Override
     public com.global.coffeeshop.entity.User getUserByUserName(String username) throws CoffeeShopCustomException {
-
         if (username.isEmpty()) {
             logger.error("Invalid username");
             throw new CoffeeShopCustomException(HttpStatus.BAD_REQUEST, "Invalid username");
@@ -92,9 +81,15 @@ public class UserService implements CoffeeUserService,UserDetailsService, Common
     public boolean validateUser(Long userId) throws CoffeeShopCustomException {
         com.global.coffeeshop.entity.User user = coffeeUserService.getUserFromContext();
         if (!userId.equals(user.getId())) {
-            logger.error("Authorization error for user id : {}", userId );
+            logger.error("Authorization error for user id : {}", userId);
             throw new CoffeeShopCustomException(HttpStatus.BAD_REQUEST, "Authorization error for user id : " + userId);
         }
         return true;
     }
+
+    @Override
+    public boolean isExistByUserId(Long id) {
+        return userRepository.existsById(id);
+    }
+
 }
